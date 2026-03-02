@@ -1,58 +1,46 @@
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class User {
     private String name;
     private Integer age;
-    private String workplace;
+    private String job;
     private String address;
+    private static List<String> VALIDJOBS = Arrays.asList("Google", "Uber", "Amazon");
+    private static List<String> VALID_ADDRESSES = Arrays.asList("London", "New York", "Amsterdam");
 
-    public User(String uname, Integer uage, String uworkplace, String uaddress){
-        this.name = uname;
-        this.age = uage;
-        this.workplace = uworkplace;
-        this.address = uaddress;
-    }
-    public static Map<Integer, List<User>> groupUsers(List<User> users){
-        Map<Integer, List<User>> mapuser = new HashMap<Integer, List<User>>();
-        for(User user: users){
-            if(mapuser.containsKey(user.age)){
-                List<User> sameageusers = mapuser.get(user.age);
-                sameageusers.add(user);
-                mapuser.put(user.age, sameageusers);
+    public User(String uname, Integer uage, String ujob, String uaddress){
+        if (!uname.isEmpty()){
+            if (uage>=18) {
+                if (VALIDJOBS.contains(ujob)) {
+                    if (VALID_ADDRESSES.contains(uaddress)) {
+                        this.name = uname;
+                        this.age = uage;
+                        this.job = ujob;
+                        this.address = uaddress;
+                    } else {
+                        throw new IllegalArgumentException("Not valid address");
+                    }
+                } else {
+                    throw new IllegalArgumentException("Not valid job");
+                }
             } else {
-                List<User> sameageusers = new ArrayList<>();
-                sameageusers.add(user);
-                mapuser.put(user.age, sameageusers);
+                throw new IllegalArgumentException("Not valid age");
             }
+        } else {
+            throw new IllegalArgumentException("Name is empty");
         }
-        return mapuser;
     }
+
     public static void main(String[] args){
-        User user1 = new User("Oleg", 19, "school", "NY");
-        User user2 = new User("Alex", 20, "office", "LA");
-        User user3 = new User("Igor", 21, "farm", "NM");
-        User user4 = new User("Ivan", 19, "fabric", "NY");
-        User user5 = new User("Anna", 20, "school", "LA");
-        User user6 = new User("Poly", 21, "office", "NM");
-        User user7 = new User("Max", 19, "farm", "CH");
-        User user8 = new User("Tima", 21, "fabric", "DT");
-        User user9 = new User("Yoru", 20, "station", "CH");
-        User user10 = new User("Dima", 19, "station", "DT");
+        User user1 = new User("Oleg", 19, "Google", "London");
+        User user2 = new User("Alex", 20, "Uber", "New York");
+        User user3 = new User("Igor", 18, "Amazon", "Amsterdam");
+        User user4 = new User("Mira", 19, "Uber", "London");
         List<User> userlist = new ArrayList<>();
         userlist.add(user1);
         userlist.add(user2);
         userlist.add(user3);
         userlist.add(user4);
-        userlist.add(user5);
-        userlist.add(user6);
-        userlist.add(user7);
-        userlist.add(user8);
-        userlist.add(user9);
-        userlist.add(user10);
-        Map<Integer, List<User>> mapuser = groupUsers(userlist);
-        System.out.println(mapuser);
+        System.out.println(userlist);
     }
 }
